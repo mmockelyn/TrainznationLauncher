@@ -5,6 +5,8 @@ const ejse              = require('ejs-electron')
 const { autoUpdater }   = require('electron-updater')
 const app               = electron.app
 const BrowserWindow     = electron.BrowserWindow
+const ipcMain           = electron.ipcMain
+
 
 function createWindow() {
     let win = new BrowserWindow({
@@ -50,13 +52,6 @@ function getPlatformIcon(filename){
 
 app.on('ready', createWindow, autoUpdater.checkForUpdatesAndNotify())
 
-app.on('window-all-closed', () => {
-    // Sur macOS, il est commun pour une application et leur barre de menu
-    // de rester active tant que l'utilisateur ne quitte pas explicitement avec Cmd + Q
-    if (process.platform !== 'darwin' && this.isMenuBarAutoHide() && this.isMenuBarVisible()) { 
-        app.quit()
-    }
-})
 
 autoUpdater.on ('update-available', () => { 
     win.webContents.send ('update_available'); 

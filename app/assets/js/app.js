@@ -1,8 +1,10 @@
+
 const $         = require('jquery')
 const Store     = require('electron-store')
 const swal      = require('sweetalert2')
 const fs        = require('fs')
 const Shell     = require('node-powershell')
+const { ipcRenderer } = require('electron');
 
 let store = new Store()
 const notification = document.getElementById('notification');
