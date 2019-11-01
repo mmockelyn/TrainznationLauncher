@@ -2,8 +2,11 @@ const electron          = require('electron')
 const url               = require('url')
 const path              = require('path')
 const ejse              = require('ejs-electron')
+const { autoUpdater }   = require('electron-updater')
 const app               = electron.app
 const BrowserWindow     = electron.BrowserWindow
+
+autoUpdater.checkForUpdatesAndNotify()
 
 function createWindow() {
     let win = new BrowserWindow({

@@ -12,7 +12,11 @@
     "dist:mac": "npm run dist -- MAC",
     "dist:linux": "npm run dist -- LINUX",
     "lint": "eslint --config .eslintrc.json .",
-    "publish": "electron-builder --publish always"
+    "buildandpublish": "electron-builder build --win --publish always"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/mmockelyn/TrainznationLauncher.git"
   },
   "author": "",
   "license": "ISC",

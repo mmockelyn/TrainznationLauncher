@@ -18,17 +18,13 @@ function getCurrentPlatform(){
 builder.build({
     publish: [
         {
-            "provider": "s3",
-            "bucket": "trainznation-eu",
-            "region": "eu-west-3",
-            "acl": "public-read",
-            "channel": "latest",
-            "path": "Ligne/"
-          }
+            "provider": "github",
+            "token": "bd0d8da06544cf4686c56f62eded8b24ea7cfaa5"
+        }
     ],
     targets: (process.argv[2] != null && Platform[process.argv[2]] != null ? Platform[process.argv[2]] : getCurrentPlatform()).createTarget(),
     config: {
-        appId: 'TrainznationLauncher',
+        appId: 'eu.trainznation.launcher',
         productName: 'Trainznation Launcher',
         artifactName: '${productName}.${ext}',
         copyright: 'Copyright © 2019 Trainznation',
