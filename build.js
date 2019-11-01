@@ -19,6 +19,8 @@ builder.build({
     publish: [
         {
             "provider": "github",
+            "owner": "mmockelyn",
+            "repo": "https://github.com/mmockelyn/TrainznationLauncher.git",
             "token": "bd0d8da06544cf4686c56f62eded8b24ea7cfaa5"
         }
     ],
