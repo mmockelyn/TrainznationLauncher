@@ -3,6 +3,7 @@ const url               = require('url')
 const path              = require('path')
 const ejse              = require('ejs-electron')
 const { autoUpdater }   = require('electron-updater')
+const isDev             = require('electron-is-dev')
 const app               = electron.app
 const BrowserWindow     = electron.BrowserWindow
 const ipcMain           = electron.ipcMain
@@ -27,7 +28,9 @@ function createWindow() {
         slashes: true
     }))
 
-    win.webContents.openDevTools()
+    if(isDev){
+        win.webContents.openDevTools()
+    }
 
     win.removeMenu()
     win.setResizable(true)
