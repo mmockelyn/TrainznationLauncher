@@ -4,13 +4,24 @@ const path              = require('path')
 const ejse              = require('ejs-electron')
 const { autoUpdater }   = require('electron-updater')
 const isDev             = require('electron-is-dev')
+const log               = require('electron-log');
+const swal              = require('sweetalert2')
 const app               = electron.app
 const BrowserWindow     = electron.BrowserWindow
 const ipcMain           = electron.ipcMain
 
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+let win
+
+function sendStatusToWindow(text) {
+    log.info(text);
+  }
 
 function createWindow() {
-    let win = new BrowserWindow({
+        win = new BrowserWindow({
         width: 1080,
         height: 768,
         icon: getPlatformIcon('Trainznation'),
@@ -38,6 +49,7 @@ function createWindow() {
     win.on('close', () => {
         win = null
     })
+    return win
 }
 
 function getPlatformIcon(filename){
@@ -53,17 +65,55 @@ function getPlatformIcon(filename){
     return path.join(__dirname, 'app', 'assets', 'images', filename)
 }
 
-app.on('ready', createWindow, autoUpdater.checkForUpdatesAndNotify())
 
+autoUpdater.on('checking-for-update', () => {
+    swal.fire({
+        type: 'info',
+        text: "Recherche de mise à jour"
+    })
+    //sendStatusToWindow('Checking for update...');
+})
 
-autoUpdater.on ('update-available', () => { 
-    win.webContents.send ('update_available'); 
-  }); 
+autoUpdater.on('update-available', (info) => {
+    swal.fire({
+        type: 'info',
+        text: "Mise à jour disponible"
+    })
+    //sendStatusToWindow('Update available.');
+})
 
-  autoUpdater.on ('update-download', () => { 
-    win.webContents.send ('update_downloaded'); 
-  });
+autoUpdater.on('update-not-available', (info) => {
+    swal.fire({
+        type: 'info',
+        text: "Aucune mise à jour de disponible"
+    })
+    //sendStatusToWindow('Update not available.');
+})
 
-  ipcMain.on('restart_app', () => {
-    autoUpdater.quitAndInstall();
-  });
+autoUpdater.on('error', (err) => {
+    sendStatusToWindow('Error in auto-updater. ' + err);
+})
+
+autoUpdater.on('download-progress', (progressObj) => {
+    let log_message = "Download speed: " + progressObj.bytesPerSecond;
+    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+    sendStatusToWindow(log_message);
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+    swal.fire({
+        type: 'info',
+        text: "Mise à jour télécharger"
+    })
+    //sendStatusToWindow('Update downloaded');
+});
+
+app.on('ready', () => {
+    autoUpdater.checkForUpdates();
+    createWindow()
+})
+
+app.on('window-all-closed', () => {
+    app.quit();
+})

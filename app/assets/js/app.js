@@ -1,15 +1,20 @@
 
-const $         = require('jquery')
-const Store     = require('electron-store')
-const swal      = require('sweetalert2')
-const fs        = require('fs')
-const Shell     = require('node-powershell')
-const { ipcRenderer } = require('electron');
+const $                 = require('jquery')
+const { ipcRenderer }   = require('electron');
+const Store             = require('electron-store')
+const swal              = require('sweetalert2')
+const fs                = require('fs')
+const Shell             = require('node-powershell')
+
+
+
 
 let store = new Store()
+
 const notification = document.getElementById('notification');
 const message = document.getElementById('message');
 const restartButton = document.getElementById('restart-button');
+const version = document.getElementById('FrameTitleVersion')
 
 $('[data-toggle="tooltip"]').tooltip()
 
@@ -46,6 +51,12 @@ ipcRenderer.on('update_available', () => {
     restartButton.classList.remove('hidden');
     notification.classList.remove('hidden');
   });  
+
+  ipcRenderer.send('app_version')
+  ipcRenderer.on('app_version', (event, arg) => {
+    ipcRenderer.removeAllListeners('app_version');
+    version.innerText =  arg.version;
+  });
 
   function closeNotification() {
     notification.classList.add('hidden');
