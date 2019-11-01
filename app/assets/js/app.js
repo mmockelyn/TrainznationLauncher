@@ -5,6 +5,9 @@ const fs        = require('fs')
 const Shell     = require('node-powershell')
 
 let store = new Store()
+const notification = document.getElementById('notification');
+const message = document.getElementById('message');
+const restartButton = document.getElementById('restart-button');
 
 $('[data-toggle="tooltip"]').tooltip()
 
@@ -28,6 +31,26 @@ $.get('https://trainznation-eu.s3.eu-west-3.amazonaws.com/Ligne/pdl')
 if(store.get('versionLocal') != store.get('versionDistant')) {
     $("#pdlVersionState").removeClass('text-muted').addClass('text-danger').html("Votre version n'est pas à jour ("+ store.get('versionLocal') +" => "+ store.get('versionDistant') +")")
 }
+
+ipcRenderer.on('update_available', () => {
+    ipcRenderer.removeAllListeners('update_available');
+    message.innerText = "Une nouvelle version du launcher est disponible. Téléchargement en cours..";
+    notification.classList.remove('hidden');
+  });
+
+  ipcRenderer.on('update_downloaded', () => {
+    ipcRenderer.removeAllListeners('update_downloaded');
+    message.innerText = 'Mise à jour télécharger. Vous devez redémarrer le programme. Voulez-vous le redemarrer ?';
+    restartButton.classList.remove('hidden');
+    notification.classList.remove('hidden');
+  });  
+
+  function closeNotification() {
+    notification.classList.add('hidden');
+  }
+  function restartApp() {
+    ipcRenderer.send('restart_app');
+  }
 
 $("#btnLaunch").on('click', (event) => {
     $.post('https://trainznation.eu/api/route/update', {'build': store.get('versionDistant')})

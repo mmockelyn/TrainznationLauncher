@@ -6,8 +6,6 @@ const { autoUpdater }   = require('electron-updater')
 const app               = electron.app
 const BrowserWindow     = electron.BrowserWindow
 
-autoUpdater.checkForUpdatesAndNotify()
-
 function createWindow() {
     let win = new BrowserWindow({
         width: 1080,
@@ -50,7 +48,7 @@ function getPlatformIcon(filename){
     return path.join(__dirname, 'app', 'assets', 'images', filename)
 }
 
-app.on('ready', createWindow)
+app.on('ready', createWindow, autoUpdater.checkForUpdatesAndNotify())
 
 app.on('window-all-closed', () => {
     // Sur macOS, il est commun pour une application et leur barre de menu
@@ -59,3 +57,15 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
+
+autoUpdater.on ('update-available', () => { 
+    win.webContents.send ('update_available'); 
+  }); 
+
+  autoUpdater.on ('update-download', () => { 
+    win.webContents.send ('update_downloaded'); 
+  });
+
+  ipcMain.on('restart_app', () => {
+    autoUpdater.quitAndInstall();
+  });
