@@ -12,7 +12,7 @@
     "dist:mac": "npm run dist -- MAC",
     "dist:linux": "npm run dist -- LINUX",
     "lint": "eslint --config .eslintrc.json .",
-    "buildandpublish": "electron-builder GH_TOKEN=bd0d8da06544cf4686c56f62eded8b24ea7cfaa5 build --win --publish always"
+    "buildandpublish": "electron-builder build --win --publish always"
   },
   "repository": {
     "type" : "git",
