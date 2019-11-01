@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder build --win",
-    "dist:publish": "npm run dist --publish always",
+    "dist:publish": "electron-builder build --win --publish always",
     "lint": "eslint --config .eslintrc.json ."
   },
   "repository": {
