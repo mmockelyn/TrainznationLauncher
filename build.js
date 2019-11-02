@@ -21,7 +21,7 @@ builder.build({
             "provider": "github",
             "owner": "mmockelyn",
             "repo": "https://github.com/mmockelyn/TrainznationLauncher.git",
-            "token": "bd0d8da06544cf4686c56f62eded8b24ea7cfaa5"
+            "token": "f46202f986130e01d7142363c14172816de8fbc8"
         }
     ],
     targets: (process.argv[2] != null && Platform[process.argv[2]] != null ? Platform[process.argv[2]] : getCurrentPlatform()).createTarget(),

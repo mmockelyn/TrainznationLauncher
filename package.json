@@ -1,6 +1,6 @@
 {
   "name": "trainznationlauncher",
-  "version": "v2.0.9",
+  "version": "v2.0.9a",
   "description": "Launcher de trainznation",
   "main": "index.js",
   "scripts": {
